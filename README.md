@@ -12,11 +12,12 @@ Made for teaching and early concept exploration. Educational use only (see [Limi
 
 ## What it does
 
-- **Start from a hull.** Six starting hulls: cargo ship, offshore vessel, research vessel, workboat, slender hull and barge. Set LOA, beam, depth max and draught, and choose a transom, round or cruiser stern.
+- **Start from a hull.** Eleven starting hulls: cargo ship, bulk carrier, offshore vessel, stern trawler, offshore patrol vessel, ro-pax ferry, harbour tug, research vessel, workboat, slender hull and barge. Some come with a bulbous bow. The container ship is also in the list, loaded from a table of offsets. Set LOA, beam, depth max and draught, and choose a transom, round or cruiser stern.
 - **Shape sliders.** Flat of bottom, bilge radius, parallel middle body, forebody fullness and stem rake. They redraw all curves as you move them.
+- **Bulbous bow.** Tick it to add a bulb below the waterline, then set its length, breadth and height with sliders. It shows in the 3D view, the hydrostatics and the table of offsets, and as a dashed outline in the sheer plan, half-breadth plan and body plan.
 - **Edit the curves.** Three linked views: the sheer plan (keel, sheer, stem, stern), the half-breadth plan (the outline from above) and the body plan (the cross-sections). Every edit updates the other views, the 3D hull and the hydrostatics at once.
 - **Body plan sections.** Five sections to start, from 2 to 20. Add a section, delete one, and type the position of a section in % of the length.
-- **3D view.** Orbit, pan and zoom. Shows the waterline and the lines (stations and waterlines). The deck is left open so you can see inside the hull.
+- **3D view.** Orbit, pan and zoom. Shows the waterline and the lines (stations and waterlines). *Mesh* draws every station and waterline of the table, *Transparent* lets you see through the hull, the *Side*, *Top*, *Front* and *3D* buttons give standard views, and *Enlarge* makes the 3D view larger, with the three 2D views in a row below it (*Back* or Esc returns). The deck is left open so you can see inside the hull.
 - **Hydrostatics.** Displacement, volume, LWL, BWL, Cb, Cp, Cm, Cwp, LCB, KB, waterplane area and TPC, at the chosen draught, read from the table of offsets the same way DBB reads it.
 - **Resistance (Holtrop).** The total resistance against speed, with the Froude number along the top, a marker at the service speed and the parts of the resistance at that speed. See [Resistance](#resistance-holtrop).
 - **Table of offsets.** Choose the number of stations and waterlines. Export it to copy or to save as CSV, or import a table and turn it into curves you can edit.
@@ -50,6 +51,7 @@ The *How to* button in the app has the same steps, the keyboard and mouse shortc
 | Right-click a point | Remove it |
 | Click a selected section again | Type its position in % of the length |
 | Drag in the 3D view | Orbit (right-drag pans, the wheel zooms) |
+| F | Fit the hull in the 3D view |
 
 On a Mac, use Cmd in place of Ctrl.
 
@@ -77,14 +79,19 @@ Metres. x forward from the aft end of the hull, y to port (half-breadths are pos
 
 ## Resistance (Holtrop)
 
-The Resistance panel estimates the total resistance of the hull at speeds up to about Froude number 0.45, using the Holtrop method for displacement ships. The method is based on regression of model tests and ship trials. It is for a first estimate and for comparing designs.
+The Resistance panel estimates the total resistance of the hull at speeds up to about Froude number 0.45, using the Holtrop method for displacement ships. The method is based on regression of model tests and ship trials. It is for a first estimate and for comparing designs. The panel shows a warning, for every hull, when L/B, B/T or Cp are outside the range of the method (the harbour tug and the ro-pax ferry are examples). The result is then less accurate, and for some hulls no curve can be drawn.
 
 - **Inputs from the hull.** LWL, BWL, Cb, Cm, Cwp and LCB (in % of LWL, forward of midship), read from the table of offsets at the current draught. The same draught is used forward and aft.
-- **Inputs in the panel.** Service speed in knots, the afterbody form (pram with gondola, V-shaped sections, normal, or U-shaped with Hogner stern), a bulbous bow (off by default, since the hulls drawn here have no bulb) and a transom (it follows the stern type).
+- **Inputs in the panel.** Service speed in knots, the afterbody form (pram with gondola, V-shaped sections, normal, or U-shaped with Hogner stern) and a transom (it follows the stern type).
+- **Bulbous bow.** Off by default. When you tick *Bulbous bow* in Hull shape, the method uses the area and height of the bulb that is drawn, measured from its shape. Without a bulb there is no bulb term. A deep bulb gives almost no bulb resistance of its own, because that term needs a bulb near the surface. It acts mostly by lowering the wave resistance.
 - **Result.** The plot of total resistance in kN against speed, with the service speed marked. The table gives the total and the frictional, form, appendage, wave, bulbous, transom and correlation parts at the service speed. Appendages are not included.
 - **Warnings.** The app warns when L/B (3.9 to 15), B/T (2.1 to 4) or Cp (0.55 to 0.85) are outside the range of the method, and says when the method does not cover a hull.
 
 The formulation is a port of the ShipLab Holtrop web app (Flor, Monteiro and Gaspar), including its approximations for the transom area, the bulb area and the correlation term. The port was checked against that page for ten cases, and the results are the same at every speed from 0 to 40 knots.
+
+## Assumptions
+
+The *How to* window has an *Assumptions* tab: how the hull model works, how the hydrostatics are read, how the bulbous bow is built and what it does to sections, LOA and imports, and what the Holtrop estimate assumes. It is worth reading before relying on a number.
 
 ## Limits
 
@@ -103,6 +110,7 @@ Current Chrome, Edge, Firefox and Safari. The 3D view needs WebGL. The page foll
 
 - One file, `index.html`, with the styles, the page and [Three.js](https://threejs.org/) r147 (MIT license) inlined.
 - Curves are monotone cubic (PCHIP) with constant extrapolation. The half-breadth at a position is the width from the half-breadth plan times the shape from the body plan, blended between sections.
+- The bulb is an ellipsoid blended into the hull when the table is built, so it is part of the table and not of the editable curves. Its outline in the three plan views is drawn for reference and cannot be dragged. In the body plan, which shows shares and not metres, the bulb is drawn as its widest section as a share of the beam and of the depth. A table that already has a bulb is imported as a close copy, with the bulb absorbed into the stem curve. LOA with a bulb is the length of the table.
 - The table of offsets is built on a uniform grid of stations, plus extra stations at the exact stem and stern of every waterline so the ends are smooth.
 
 ## Credits and citing
