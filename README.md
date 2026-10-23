@@ -6,6 +6,8 @@ A browser app that makes a hull form quickly. You start from a basic hull type a
 
 It is one HTML file. It needs no installation, no server and no internet connection once the page is loaded. Nothing you draw leaves your computer.
 
+![Hull Generator: the sheer plan, half-breadth plan, body plan and 3D hull, with the Holtrop resistance panel below](screenshot.png)
+
 Made for teaching and early concept exploration. Educational use only (see [Limits](#limits)).
 
 ## What it does
